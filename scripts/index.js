@@ -1,26 +1,30 @@
 var i = 0;
 var images = [
-'images/alabama.png',
-'images/arkansas.jpg',
-'images/auburn.jpg',
-'images/florida.jpg',
-'images/georgia.jpg',
-'images/kentucky.jpg',
-'images/lsu.webp',
-'images/mississippistate.png',
-'images/missouri.jpg',
-'images/olemiss.jpg',
-'images/southcarolina.jpg',
-'images/tamu.png',
-'images/tennessee.jpeg',
-'images/vanderbilt.png'
+{img:'images/alabama.png', text: 'Alabama'},
+{img:'images/arkansas.jpg', text: 'Arkansas'},
+{img:'images/auburn.jpg', text: 'Auburn'},
+{img:'images/florida.jpg', text: 'Florida'},
+{img:'images/georgia.jpg', text: 'Georgia'},
+{img:'images/kentucky.jpg', text: 'Kentucky'},
+{img:'images/lsu.webp', text: 'LSU'},
+{img:'images/mississippistate.png', text: 'Mississippi State' },
+{img:'images/missouri.jpg', text: 'Missouri' },
+{img:'images/olemiss.jpg', text: 'Ole Miss'},
+{img:'images/southcarolina.jpg', text: 'South Carolina'},
+{img:'images/tamu.png', text: 'Texas A&M'},
+{img:'images/tennessee.jpeg', text: 'Tennessee'},
+{img:'images/vanderbilt.png', text: 'Vanderbilt'}
 ];
+
+var imageURL = images.map(function (image) {
+    return image.img;
+});
 
 //add thumbnail images to HTML doc
 var thumbnailContainer = document.querySelector('[data-thumbnail-div]');
 images.forEach(function (image) {
     var imageElement = document.createElement('img');
-    imageElement.setAttribute('src', image);
+    imageElement.setAttribute('src', image.img);
     imageElement.classList.add('thumbnail');
     imageElement.setAttribute('data-imagethumbnail','');
     thumbnailContainer.appendChild(imageElement);
@@ -35,29 +39,41 @@ var imgTarget = document.querySelector(imgSelection);
 //change main image to thumbnail image when clicked on and add hover effect on mouseover
 navItems.forEach(function (nav) {
     nav.addEventListener('click', function (event) {
-        // console.log(nav.getAttribute('src'));
-        // event.preventDefault();
         imgTarget.setAttribute('src', nav.getAttribute('src'));
-        i = images.indexOf(imgTarget.getAttribute('src'));
+        i = imageURL.indexOf(imgTarget.getAttribute('src'));
     })
-
     nav.addEventListener('mouseover', function (event) {
         nav.classList.add('image-hover-highlight');
     })
-
     nav.addEventListener('mouseout', function (event) {
         nav.classList.remove('image-hover-highlight');
     })
 });
 
+// activate model/overlay
+var modal = document.querySelector('[data-modal]');
+var modalImage = document.querySelector('[data-modal-image]');
+var modalText = document.querySelector('[data-meta1]');
+
+imgTarget.addEventListener('click', function (event) {
+    modal.classList.toggle('hidden');
+    modalImage.setAttribute('src', imgTarget.getAttribute('src'));
+    modalText.textContent = images[i].text;
+})
+
+// exit overlay by clicking exit button
+var modelExitButton = document.querySelector('[data-modal-exit]');
+modelExitButton.addEventListener('click', function (event) {
+    modal.classList.toggle('hidden');
+})
 
 //helper functions for arrow buttons on screen
 function imageForward() {
     if (i >= images.length-1) {
         i = 0;
     } else {
-        i += 1;}
-    var imgSrc = images[i];
+        i = i + 1;}
+    var imgSrc = images[i].img;
     return imgSrc;
 }
 
@@ -65,9 +81,9 @@ function imageBackward() {
     if (i == 0) {
         i = images.length-1; 
     } else {
-        i -= 1;
+        i = i - 1;
     }
-    var imgSrc = images[i];
+    var imgSrc = images[i].img;
     return imgSrc;
 }
 
@@ -85,7 +101,6 @@ arrowBack.addEventListener('click', function (event) {
 
 //change main images with the keyboard left and right arrow
 document.addEventListener('keydown', function (event) {
-    const key = event.key;
     switch (event.key) {
         case "ArrowLeft":
         imgTarget.setAttribute('src', imageBackward());
@@ -93,32 +108,7 @@ document.addEventListener('keydown', function (event) {
         case "ArrowRight":
         imgTarget.setAttribute('src', imageForward());
         break;
+        case "Escape":
+        modal.classList.toggle('hidden');
     }
 })
-
-
-
-
-
-
-
-
-
-
-
-
-//html image data just in case needed later
-/* < img data - imagethumbnail src = "images/alabama.png" alt = "" class="thumbnail" >
-    <img data-imagethumbnail src="images/arkansas.jpg" alt="" class="thumbnail">
-        <img data-imagethumbnail src="images/auburn.jpg" alt="" class="thumbnail">
-            <img data-imagethumbnail src="images/florida.jpg" alt="" class="thumbnail">
-                <img data-imagethumbnail src="images/georgia.jpg" alt="" class="thumbnail">
-                    <img data-imagethumbnail src="images/kentucky.jpg" alt="" class="thumbnail">
-                        <img data-imagethumbnail src="images/lsu.webp" alt="" class="thumbnail">
-                            <img data-imagethumbnail src="images/mississippistate.png" alt="" class="thumbnail">
-                                <img data-imagethumbnail src="images/missouri.jpg" alt="" class="thumbnail">
-                                    <img data-imagethumbnail src="images/olemiss.jpg" alt="" class="thumbnail">
-                                        <img data-imagethumbnail src="images/southcarolina.jpg" alt="" class="thumbnail">
-                                            <img data-imagethumbnail src="images/tamu.png" alt="" class="thumbnail">
-                                                <img data-imagethumbnail src="images/tennessee.jpeg" alt="" class="thumbnail">
-                                                    <img data-imagethumbnail src="images/vanderbilt.png" alt="" class="thumbnail">             */
