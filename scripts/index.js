@@ -123,7 +123,6 @@ function konamiCode() {
     )}
 
 function konamiEffect () {
-    console.log('hi');
     $('.main-container').css('background-color','black');
 }
 
