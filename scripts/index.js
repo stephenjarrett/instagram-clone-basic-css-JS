@@ -16,55 +16,51 @@ var images = [
 {img:'images/vanderbilt.png', text: 'Vanderbilt'}
 ];
 
-var imageURL = images.map(function (image) {
-    return image.img;
-});
-
 //add thumbnail images to HTML doc
-var thumbnailContainer = document.querySelector('[data-thumbnail-div]');
+var $thumbnailContainer = $('[data-thumbnail-div]');
 images.forEach(function (image) {
-    var imageElement = document.createElement('img');
-    imageElement.setAttribute('src', image.img);
-    imageElement.classList.add('thumbnail');
-    imageElement.setAttribute('data-imagethumbnail','');
-    thumbnailContainer.appendChild(imageElement);
+    var $imageElement = $('<img>');
+    $imageElement.attr('src', image.img);
+    $imageElement.addClass('thumbnail');
+    $imageElement.attr('data-imagethumbnail','');
+    $thumbnailContainer.append($imageElement);
 })
 
 var navSelection = "[data-imagethumbnail]";
 var imgSelection = "[data-mainimage]";
 
-var navItems = document.querySelectorAll(navSelection);
-var imgTarget = document.querySelector(imgSelection);
+var $navItems = $(navSelection);
+var $imgTarget = $(imgSelection);
 
 //change main image to thumbnail image when clicked on and add hover effect on mouseover
-navItems.forEach(function (nav) {
-    nav.addEventListener('click', function (event) {
-        imgTarget.setAttribute('src', nav.getAttribute('src'));
-        i = imageURL.indexOf(imgTarget.getAttribute('src'));
+$navItems.each(function (none,nav) {
+    $(this).on('click', function (event) {
+        $imgTarget.attr('src', $(this).attr('src'));
+        i = none;
     })
-    nav.addEventListener('mouseover', function (event) {
-        nav.classList.add('image-hover-highlight');
+    $(this).on('mouseover', function (event) {
+        $(this).addClass('image-hover-highlight');
     })
-    nav.addEventListener('mouseout', function (event) {
-        nav.classList.remove('image-hover-highlight');
+    $(this).on('mouseout', function (event) {
+        $(this).removeClass('image-hover-highlight');
     })
 });
 
 // activate model/overlay
-var modal = document.querySelector('[data-modal]');
-var modalImage = document.querySelector('[data-modal-image]');
-var modalText = document.querySelector('[data-meta1]');
+var $modal = $('[data-modal]');
+var $modalImage = $('[data-modal-image]');
+var $modalText = $('[data-meta1]');
 
-imgTarget.addEventListener('click', function (event) {
-    modal.classList.toggle('hidden');
-    modalImage.setAttribute('src', imgTarget.getAttribute('src'));
-    modalText.textContent = images[i].text;
+$imgTarget.on('click', function (event) {
+    $modal.toggleClass('hidden');
+    $modalImage.attr('src', $imgTarget.attr('src'));
+    $modalText.text(images[i].text);
 })
 
 // exit overlay by clicking exit button
-var modelExitButton = document.querySelector('[data-modal-exit]');
-modelExitButton.addEventListener('click', function (event) {
-    modal.classList.toggle('hidden');
+var $modelExitButton = $('[data-modal-exit]');
+$modelExitButton.on('click', function (event) {
+    $modal.toggleClass('hidden');
 })
 
 //helper functions for arrow buttons on screen
@@ -87,28 +83,48 @@ function imageBackward() {
     return imgSrc;
 }
 
-var arrowBack = document.querySelector('[data-arrow-back]');
-var arrowForward = document.querySelector('[data-arrow-forward]');
+var $arrowBack = $('[data-arrow-back]');
+var $arrowForward = $('[data-arrow-forward]');
 
 //change main image using the arrow buttons on screen
-arrowForward.addEventListener('click', function (event) {
-    imgTarget.setAttribute('src', imageForward());
+$arrowForward.on('click', function (event) {
+    $imgTarget.attr('src', imageForward());
 })
 
-arrowBack.addEventListener('click', function (event) {
-    imgTarget.setAttribute('src', imageBackward());
+$arrowBack.on('click', function (event) {
+    $imgTarget.attr('src', imageBackward());
 })
 
 //change main images with the keyboard left and right arrow
-document.addEventListener('keydown', function (event) {
+$(document).on('keydown', function (event) {
     switch (event.key) {
         case "ArrowLeft":
-        imgTarget.setAttribute('src', imageBackward());
+        $imgTarget.attr('src', imageBackward());
         break;
         case "ArrowRight":
-        imgTarget.setAttribute('src', imageForward());
+        $imgTarget.attr('src', imageForward());
         break;
         case "Escape":
-        modal.classList.toggle('hidden');
+        $modal.toggleClass('hidden');
     }
 })
+
+function konamiCode() {
+    var input = '';
+    var konamiCode = '38384040373937396665';
+    $(document).on('keydown', function (e) {
+        input += e.keyCode;
+        if (input == konamiCode) {
+            return konamiEffect();
+        }
+        if (!input.indexOf(input)) return;
+        input = ('' + $(e).keyCode);
+        }
+    )}
+
+function konamiEffect () {
+    console.log('hi');
+    $('.main-container').css('background-color','black');
+}
+
+konamiCode();
