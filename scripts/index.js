@@ -105,7 +105,7 @@ $(document).on('keydown', function (event) {
         $imgTarget.attr('src', imageForward());
         break;
         case "Escape":
-        $modal.toggleClass('hidden');
+        $modal.addClass('hidden');
     }
 })
 
